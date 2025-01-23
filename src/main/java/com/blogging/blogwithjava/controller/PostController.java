@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/posts")
 @CrossOrigin(origins = "*")
@@ -30,6 +32,20 @@ public class PostController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> findAllPosts(){
+        List<Post> all = postService.getAll();
+        return ResponseEntity.status(HttpStatus.FOUND).body(all);
+    }
+
+    @GetMapping(
+            value = "/{id}"
+    )
+    public ResponseEntity<?> findById(@PathVariable(value = "id") Long id){
+        Post postById = postService.findPostById(id);
+        return ResponseEntity.status(HttpStatus.FOUND).body(postById);
     }
 
 
